@@ -34,20 +34,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 80vh; /* Make container take up most of the viewport height */
+            height: 80vh;
             margin-top: 20px;
         }
 
         .image-container,
         .text-container {
-            width: 50%; /* Both containers take up half the page */
+            width: 50%;
             padding: 20px;
+        }
+
+        /* Image container set to a square shape */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Make this the same as width for a square */
+            width: 300px;
+            overflow: hidden;
+            margin: auto;
         }
 
         .image-container img {
             width: 100%;
-            height: auto;
-            border-radius: 50%;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -72,7 +82,7 @@
 
             .image-container,
             .text-container {
-                width: 100%; /* Stack them vertically on smaller screens */
+                width: 100%;
                 padding: 10px;
             }
 
@@ -91,7 +101,7 @@
         <div class="container">
             <!-- Image Container -->
             <div class="image-container">
-                <img src="static/profile.png" alt="Sheila Juma">
+                <img src="/static/profile.jpg" alt="Sheila Juma">
             </div>
 
             <!-- Text Container -->
