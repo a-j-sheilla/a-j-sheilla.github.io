@@ -1,52 +1,32 @@
 package main
 
 import (
-	"html/template"
-	"log"
-	"net/http"
+    "html/template"
+    "log"
+    "net/http"
 )
 
-var tmpl = template.Must(template.ParseGlob("templates/*.html"))
-
 func main() {
-	
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/about", aboutHandler)
-	http.HandleFunc("/projects", projectsHandler)
-	http.HandleFunc("/contact", contactHandler)
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        tmpl, err := template.ParseFiles("home.html")
+        if err != nil {
+            log.Fatal("Error loading template: ", err)
+            http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+            return
+        }
 
-	
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal("Server failed:", err)
-	}
-}
+        err = tmpl.Execute(w, nil)
+        if err != nil {
+            log.Fatal("Error executing template: ", err)
+            http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+        }
+    })
 
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home.html")
-}
-
-
-func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "about.html")
-}
-
-
-func projectsHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "projects.html")
-}
-
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "contact.html")
-}
-
-func renderTemplate(w http.ResponseWriter, tmplName string) {
-	if err := tmpl.ExecuteTemplate(w, tmplName, nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+    log.Println("Starting server on :8080...")
+    err := http.ListenAndServe(":8080", nil)
+    if err != nil {
+        log.Fatal("Error starting server: ", err)
+    }
 }
