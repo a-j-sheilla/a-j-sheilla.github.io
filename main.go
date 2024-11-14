@@ -36,7 +36,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "contact.html")
 }
 
-func renderTemplate(w http.ResponseWriter, tmplName string) {
+ func renderTemplate(w http.ResponseWriter, tmplName string) {
 	if err := tmpl.ExecuteTemplate(w, tmplName, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
