@@ -10,7 +10,7 @@ func main() {
     http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        tmpl, err := template.ParseFiles("home.html")
+        tmpl, err := template.ParseFiles("./templates/home.html")
         if err != nil {
             log.Fatal("Error loading template: ", err)
             http.Error(w, "Internal Server Error", http.StatusInternalServerError)
